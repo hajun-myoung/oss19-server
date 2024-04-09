@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 from fastapi import FastAPI
 
 import csv
@@ -10,14 +10,13 @@ app = FastAPI()
 def read_root():
     return {"Status": "200 OK", "Purpose": "OS19", "Author": "Chanwoo"}
 
-@app.get("/ingredients/{page_number}")
-def get_ingredients(page_number: int):
+@app.get("/ingredients")
+def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, term: Optional[int] = 10):
     ingredients = []
 
-    ## Mocked up Ingredients Database
-    # TODO: Need to migrate to real database
+    # ## Mocked up Ingredients Database
+    # # TODO: Need to migrate to real database
     filename = "ingredients.csv"
-
     with open(filename, "r") as file:
         # FIXME: Below code is using n+1 antipattern
         # When you migrate this to the real databse,
@@ -28,6 +27,22 @@ def get_ingredients(page_number: int):
                 ingredients.append(item)
         file.close()
 
-    slicedData = ingredients[page_number: page_number+10]
+    result = []
+    if query is not None:
+        for ingredient in ingredients:
+            if query in ingredient:
+                result.append(ingredient)
+    else:
+        result = ingredients[page * term: page * term + term]
 
-    return {"ingredients": slicedData}
+    if len(result) == 0:
+        return FileNotFoundError("No Ingredients Has Been Queried")
+    else:
+        return {
+            "status": "200 OK",
+            "result": result
+        }
+
+# TODO: Create new ingredients
+
+# @app.get("/ingredients")
