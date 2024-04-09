@@ -1,5 +1,5 @@
 from typing import Union, Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 import csv
 
@@ -36,12 +36,13 @@ def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, ter
         result = ingredients[page * term: page * term + term]
 
     if len(result) == 0:
-        return FileNotFoundError("No Ingredients Has Been Queried")
+        raise HTTPException(status_code=404, detail="Ingredients Not Found")
     else:
-        return {
-            "status": "200 OK",
-            "result": result
-        }
+        # return {
+        #     "status": "200 OK",
+        #     "result": result
+        # }
+        return {"result": result}
 
 # TODO: Create new ingredients
 
