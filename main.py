@@ -45,5 +45,11 @@ def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, ter
         return {"result": result}
 
 # TODO: Create new ingredients
+# Recommend to make it after connect to the real databse
+# Cuz, creating to mockup DB(the csv file) is useless
+
+# TODO: Update an ingredient
+
+# TODO: Delete an ingredient
 
 # @app.get("/ingredients")
