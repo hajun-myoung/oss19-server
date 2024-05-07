@@ -2,9 +2,19 @@ from typing import Union, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
+import uvicorn
+
 import csv
 
 app = FastAPI()
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("firebase_credential.json")
+firebase_admin.initialize_app(cred)
+
 
 origins = [
     "http://localhost",
@@ -69,3 +79,7 @@ def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, ter
 # TODO: Delete an ingredient
 
 # @app.get("/ingredients")
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))  # Default to 8000 if PORT not set
+    uvicorn.run(app, host="0.0.0.0", port=port)

@@ -10,7 +10,6 @@ cryptography==42.0.7
 distro==1.9.0
 exceptiongroup==1.2.0
 fastapi==0.110.1
-firebase-admin==6.5.0
 google-api-core==2.19.0
 google-api-python-client==2.127.0
 google-auth==2.29.0
