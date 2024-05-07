@@ -1,9 +1,25 @@
 from typing import Union, Optional
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 import csv
 
 app = FastAPI()
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -14,12 +30,12 @@ def read_root():
 def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, term: Optional[int] = 10):
     ingredients = []
 
-    # ## Mocked up Ingredients Database
-    # # TODO: Need to migrate to real database
+    ## Mocked up Ingredients Database
+    # TODO: Need to migrate to real database
     filename = "ingredients.csv"
     with open(filename, "r") as file:
         # FIXME: Below code is using n+1 antipattern
-        # When you migrate this to the real databse,
+        # When migrating this to the real databse,
         # fix it to the method that not using the antipattern
         reader = csv.reader(file)
         for row in reader:
@@ -43,6 +59,8 @@ def get_ingredients(page: Optional[int] = None, query: Optional[str] = None, ter
         #     "result": result
         # }
         return {"result": result}
+    
+# @app.post("/")
 
 # TODO: Create new ingredients
 # Recommend to make it after connect to the real databse
