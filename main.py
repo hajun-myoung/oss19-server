@@ -2,8 +2,8 @@ from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import firebase_admin
-from firebase_admin import credentials
+# import firebase_admin
+# from firebase_admin import credentials
 import os
 import uvicorn
 from openai import OpenAI
@@ -13,8 +13,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 api_key = os.getenv('OPENAI_API_KEY')
 
-cred = credentials.Certificate("firebase_credential.json")
-firebase_admin.initialize_app(cred)
+# cred = credentials.Certificate("firebase_credential.json")
+# firebase_admin.initialize_app(cred)
 
 origins = [
     "http://localhost",
@@ -39,6 +39,7 @@ client = OpenAI(
 class RecipeRequest(BaseModel):
     ingredients: list[str]
     tools: list[str]
+    styles: list[str]
 
 class RecipeResponse(BaseModel):
     recipe: str
@@ -50,6 +51,7 @@ def read_root():
 @app.post("/getrecipe")
 async def getRecipeByGPT(request: RecipeRequest):
     prompt = f"""
+    선호 스타일: {', '.join(request.styles)}
     식재료: {', '.join(request.ingredients)}
     조리도구: {', '.join(request.tools)}
     위 식재료와 조리도구에 맞는 레시피를 다음 형식에 맞게 추천해줘. 형식을 반드시 지켜주세요:
