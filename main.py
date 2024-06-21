@@ -19,6 +19,8 @@ api_key = os.getenv('OPENAI_API_KEY')
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://3.34.187.76:8000",
+    "https://chanwoo-oss-19.web.app/",
 ]
 
 app.add_middleware(
