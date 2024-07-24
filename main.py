@@ -20,7 +20,8 @@ origins = [
     "http://localhost",
     "http://localhost:3000",
     "http://3.34.187.76:8000",
-    "https://chanwoo-oss-19.web.app/",
+    "https://chanwoo-oss-19.web.app",
+    "https://*.web.app",
 ]
 
 app.add_middleware(
